@@ -35,5 +35,5 @@ app.post('/posts', (req, res) => Post.create(req.body)
   .catch(e => console.error(e)))
 
 require('./config').sync()
-  .then(() => app.listen(3000))
+  .then(() => app.listen(process.env.PORT||3000))
   .catch(e => console.error(e))
