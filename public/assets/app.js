@@ -1,9 +1,12 @@
 const L_B_ZOMATO = 'https://developers.zomato.com/api/v2.1/search?'
 const L_R_ZOMATO = 'https://developers.zomato.com/api/v2.1/reviews?'
-const K_ZOMATO = 'apikey=ee4a608fabb19dc711f33a112d67a23e'
+const K_ZOMATO = 'apikey=39e17219549ea152e0fb9205ede5e31f'
+// 'apikey=ee4a608fabb19dc711f33a112d67a23e'
 const S_RATING = 'sort=rating'
 
 let listOfRest = []
+let lati = ''
+let long = ''
 
 class Restaurant {
 
@@ -14,12 +17,29 @@ class Restaurant {
     this.address = restaurant.location.address
     this.phone_numbers = restaurant.phone_numbers
     this.photos = restaurant.photos
+    this.cuisines = restaurant.cuisines
     this.reviews = reviews
   }
 }
 
-function getRestaurant() {
-  let link = `${L_B_ZOMATO}&${S_RATING}&${K_ZOMATO}`
+
+
+document.getElementById('search_btn').addEventListener('click', () => {
+  let keyword = document.getElementById('search').value
+  keyword = keyword.replace(/\s+/g, '+')
+  fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${keyword}&key=AIzaSyCbOrVjet_s1nbRMEgLVNsx0reP9G6Ju6g`)
+    .then(r => r.json())
+    .then(({ results }) => {
+      console.log(results[0].geometry.location.lat)
+      console.log(results[0].geometry.location.lng)
+      let lati = results[0].geometry.location.lat
+      let long = results[0].geometry.location.lng
+      getRestaurant(lati, long)
+    })
+})
+
+function getRestaurant(lati, long) {
+  let link = `${L_B_ZOMATO}&lat=${lati}&lon=${long}&${K_ZOMATO}`
   fetch(link)
     .then(d => d.json())
     .then(restaurantsData => {
@@ -39,7 +59,6 @@ function getRestaurant() {
     })
     .catch(e => console.error(e))
 }
-getRestaurant()
 
 function restCard(rest) {
   console.log(rest)
@@ -54,10 +73,10 @@ function restCard(rest) {
        <div class="carousel-inner">
   
          ${rest.photos.map(({ photo }, i) => (
-            `<div class="carousel-item ${!i ? 'active' : ''} " >
-                <img src="${photo.url}" class="d-block w-100" height="250">
+    `<div class="carousel-item ${!i ? 'active' : ''} " >
+                <img src="${photo.url}" class="d-block w-100" height="300">
               </div> `
-              )).join('')}
+  )).join('')}
    
        </div>
      <a class="carousel-control-prev" href="#r${rest.id}" role="button" data-slide="prev">
@@ -73,10 +92,12 @@ function restCard(rest) {
     </div>
       <div class="col-md-8">
          <div class="card-body">
-         <h5 class="card-title">Card title</h5>
-         <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content.
-          This content is a little bit longer.</p>
-         <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+         <h5 class="card-title">${rest.name}  <span class="badge badge-pill badge-success">${rest.user_rating.aggregate_rating}</span></h5>
+         <p class="card-text">Address:<br> ${rest.address}</p>
+         <p class="card-text">Phone:<br> ${rest.phone_numbers}</p>
+         <p class="card-text">Cuisines:<br> ${rest.cuisines}</p>
+         <a href="#" class="btn btn-primary btn-sm active" role="button" aria-pressed="true">Read Reviews</a>
+         <a href="#" class="btn btn-primary btn-sm active" role="button" aria-pressed="true">Write Reviews</a>
          </div>
       </div>
    </div>
@@ -86,17 +107,14 @@ function restCard(rest) {
 }
 
 
+// const getPosts = () => {
+//   return fetch(`https://api.meaningcloud.com/sentiment-2.1?key=233c4b15af98df58daa1da749c297e2a&of=json&txt=Main%20dishes%20were%20quite%20good%2C%20but%20desserts%20were%20too%20sweet%20for%20me.&model=general&lang=en`)
+//     .then(res => res.json())
+//     .then(posts => console.log(posts))
+// }
+// getPosts()
 
 
 
 
-
-const getPosts = () => {
-  return fetch(`https://api.meaningcloud.com/sentiment-2.1?key=233c4b15af98df58daa1da749c297e2a&of=json&txt=Main%20dishes%20were%20quite%20good%2C%20but%20desserts%20were%20too%20sweet%20for%20me.&model=general&lang=en`)
-    .then(res => res.json())
-    .then(posts => console.log(posts))
-}
-
-
-getPosts()
 
