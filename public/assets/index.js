@@ -33,7 +33,7 @@ const createUser = () => {
       document.getElementById('username').setAttribute('disabled', true)
       document.getElementById('signIn').setAttribute('disabled', true)
       document.getElementById('createUser').setAttribute('disabled', true)
-      document.getElementById('signOut').removeAttribute('disabled')
+      
     })
     // handle your errors
     .catch(e => console.error(e))
@@ -62,13 +62,11 @@ const signIn = (username) => {
       document.getElementById('username').setAttribute('disabled', true)
       document.getElementById('signIn').setAttribute('disabled', true)
       document.getElementById('submit').setAttribute('disabled', true)
-      document.getElementById('signOut').removeAttribute('disabled')
     })
     .catch(e => console.error(e))
 }
 
 // event listener for when the <li> is clicked with the intention of updating the current item and running the updateItem function, passing it the current element
-
 
 document.addEventListener('click', event => event.target.classList.contains('items') ? updateItem(event.target) : null)
 
