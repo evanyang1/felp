@@ -1,9 +1,12 @@
 const L_B_ZOMATO = 'https://developers.zomato.com/api/v2.1/search?'
-const L_R_ZOMATO ='https://developers.zomato.com/api/v2.1/reviews?'
-const K_ZOMATO = 'apikey=ee4a608fabb19dc711f33a112d67a23e'
+const L_R_ZOMATO = 'https://developers.zomato.com/api/v2.1/reviews?'
+const K_ZOMATO = 'apikey=39e17219549ea152e0fb9205ede5e31f'
+// 'apikey=ee4a608fabb19dc711f33a112d67a23e'
 const S_RATING = 'sort=rating'
 
 let listOfRest = []
+let lati = ''
+let long = ''
 
 class Restaurant {
 
@@ -14,6 +17,7 @@ class Restaurant {
     this.address = restaurant.location.address
     this.phone_numbers = restaurant.phone_numbers
     this.photos = restaurant.photos
+    this.cuisines = restaurant.cuisines
     this.reviews = reviews
   }
 }
@@ -40,5 +44,16 @@ fetch(link)
   })
   .catch(e => console.error(e))
 }
-getRestaurant()
+
+
+// const getPosts = () => {
+//   return fetch(`https://api.meaningcloud.com/sentiment-2.1?key=233c4b15af98df58daa1da749c297e2a&of=json&txt=Main%20dishes%20were%20quite%20good%2C%20but%20desserts%20were%20too%20sweet%20for%20me.&model=general&lang=en`)
+//     .then(res => res.json())
+//     .then(posts => console.log(posts))
+// }
+// getPosts()
+
+
+
+
 
