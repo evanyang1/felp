@@ -2,6 +2,9 @@ const L_B_ZOMATO = 'https://developers.zomato.com/api/v2.1/search?'
 const L_R_ZOMATO = 'https://developers.zomato.com/api/v2.1/reviews?'
 const K_ZOMATO = 'apikey=39e17219549ea152e0fb9205ede5e31f'
 // 'apikey=ee4a608fabb19dc711f33a112d67a23e'
+// nokZomatoapikey = a49af98deb92968111d18045d0714785
+
+
 const S_RATING = 'sort=rating'
 
 let listOfRest = []
@@ -43,6 +46,7 @@ function getRestaurant(lati, long) {
   fetch(link)
     .then(d => d.json())
     .then(restaurantsData => {
+      console.log(restaurantsData)
       // console.log(restaurantsData)
       let restaurantList = restaurantsData.restaurants
       restaurantList.forEach(({ restaurant }) => {
