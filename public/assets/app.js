@@ -22,24 +22,24 @@ class Restaurant {
   }
 }
 
-
-
 document.getElementById('search_btn').addEventListener('click', () => {
   let keyword = document.getElementById('search').value
   keyword = keyword.replace(/\s+/g, '+')
-  fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${keyword}&key=AIzaSyCbOrVjet_s1nbRMEgLVNsx0reP9G6Ju6g`)
-    .then(r => r.json())
-    .then(({ results }) => {
-      console.log(results[0].geometry.location.lat)
-      console.log(results[0].geometry.location.lng)
-      let lati = results[0].geometry.location.lat
-      let long = results[0].geometry.location.lng
-      getRestaurant(lati, long)
-    })
+  getRestaurant(keyword)
+  // fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${keyword}&key=AIzaSyCbOrVjet_s1nbRMEgLVNsx0reP9G6Ju6g`)
+  //   .then(r => r.json())
+  //   .then(({ results }) => {
+  //     // console.log(results[0].geometry.location.lat)
+  //     // console.log(results[0].geometry.location.lng)
+  //     let lati = results[0].geometry.location.lat
+  //     let long = results[0].geometry.location.lng
+  //     getRestaurant(lati, long)
+  //   })
 })
 
-function getRestaurant(lati, long) {
-  let link = `${L_B_ZOMATO}&lat=${lati}&lon=${long}&${K_ZOMATO}`
+function getRestaurant(keyword) {
+  let link = `${L_B_ZOMATO}&q=${keyword}&${K_ZOMATO}`
+  // lat = ${ lati }& lon=${ long }
   fetch(link)
     .then(d => d.json())
     .then(restaurantsData => {
