@@ -44,19 +44,6 @@ fetch(link)
   })
   .catch(e => console.error(e))
 }
-
-
-// const getPosts = () => {
-//   return fetch(`https://api.meaningcloud.com/sentiment-2.1?key=233c4b15af98df58daa1da749c297e2a&of=json&txt=Main%20dishes%20were%20quite%20good%2C%20but%20desserts%20were%20too%20sweet%20for%20me.&model=general&lang=en`)
-//     .then(res => res.json())
-//     .then(posts => console.log(posts))
-// }
-// getPosts()
-
-
-
-
-
   // buttons direct the users to different pages
   var button = document.getElementById("createAccount");
   button.addEventListener("click", function(){
@@ -73,12 +60,12 @@ fetch(link)
   document.location.href = './Index.html';
   });
 
-// API for semantic analysis 
-const getPosts = () => {
-  return fetch(`https://api.meaningcloud.com/sentiment-2.1?key=233c4b15af98df58daa1da749c297e2a&of=json&txt=Main%20dishes%20were%20quite%20good%2C%20but%20desserts%20were%20too%20sweet%20for%20me.&model=general&lang=en`)
-  .then(res => res.json())
-  .then(posts => console.log(posts))
-  }
+// // API for semantic analysis 
+// const getPosts = () => {
+//   return fetch(`https://api.meaningcloud.com/sentiment-2.1?key=233c4b15af98df58daa1da749c297e2a&of=json&txt=Main%20dishes%20were%20quite%20good%2C%20but%20desserts%20were%20too%20sweet%20for%20me.&model=general&lang=en`)
+//   .then(res => res.json())
+//   .then(posts => console.log(posts))
+//   }
   
    
-  getPosts()
+//   getPosts()
