@@ -2,9 +2,6 @@ const L_B_ZOMATO = 'https://developers.zomato.com/api/v2.1/search?'
 const L_R_ZOMATO = 'https://developers.zomato.com/api/v2.1/reviews?'
 const K_ZOMATO = 'apikey=39e17219549ea152e0fb9205ede5e31f'
 // 'apikey=ee4a608fabb19dc711f33a112d67a23e'
-// nokZomatoapikey = a49af98deb92968111d18045d0714785
-
-
 const S_RATING = 'sort=rating'
 
 let listOfRest = []
@@ -25,28 +22,27 @@ class Restaurant {
   }
 }
 
-
-
 document.getElementById('search_btn').addEventListener('click', () => {
   let keyword = document.getElementById('search').value
   keyword = keyword.replace(/\s+/g, '+')
-  fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${keyword}&key=AIzaSyCbOrVjet_s1nbRMEgLVNsx0reP9G6Ju6g`)
-    .then(r => r.json())
-    .then(({ results }) => {
-      console.log(results[0].geometry.location.lat)
-      console.log(results[0].geometry.location.lng)
-      let lati = results[0].geometry.location.lat
-      let long = results[0].geometry.location.lng
-      getRestaurant(lati, long)
-    })
+  getRestaurant(keyword)
+  // fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${keyword}&key=AIzaSyCbOrVjet_s1nbRMEgLVNsx0reP9G6Ju6g`)
+  //   .then(r => r.json())
+  //   .then(({ results }) => {
+  //     // console.log(results[0].geometry.location.lat)
+  //     // console.log(results[0].geometry.location.lng)
+  //     let lati = results[0].geometry.location.lat
+  //     let long = results[0].geometry.location.lng
+  //     getRestaurant(lati, long)
+  //   })
 })
 
-function getRestaurant(lati, long) {
-  let link = `${L_B_ZOMATO}&lat=${lati}&lon=${long}&${K_ZOMATO}`
+function getRestaurant(keyword) {
+  let link = `${L_B_ZOMATO}&q=${keyword}&${K_ZOMATO}`
+  // lat = ${ lati }& lon=${ long }
   fetch(link)
     .then(d => d.json())
     .then(restaurantsData => {
-      console.log(restaurantsData)
       // console.log(restaurantsData)
       let restaurantList = restaurantsData.restaurants
       restaurantList.forEach(({ restaurant }) => {
@@ -117,8 +113,3 @@ function restCard(rest) {
 //     .then(posts => console.log(posts))
 // }
 // getPosts()
-
-
-
-
-
