@@ -32,6 +32,9 @@ fetch(link)
      .then(reviews => {
       let rest = new Restaurant(restaurant, reviews)
       listOfRest.push(rest)
+      
+      console.log(rest)
+
        }).catch(e => console.error(e))
    })
   })
