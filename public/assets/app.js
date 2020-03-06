@@ -2,8 +2,9 @@ const reviewsArr = []
 
 const L_B_ZOMATO = 'https://developers.zomato.com/api/v2.1/search?'
 const L_R_ZOMATO = 'https://developers.zomato.com/api/v2.1/reviews?'
-const K_ZOMATO = 'apikey=39e17219549ea152e0fb9205ede5e31f'
-// 'apikey=ee4a608fabb19dc711f33a112d67a23e'
+const K_ZOMATO =
+  // 'apikey=39e17219549ea152e0fb9205ede5e31f'
+  'apikey=ee4a608fabb19dc711f33a112d67a23e'
 const S_RATING = 'sort=rating'
 
 let listOfRest = []
@@ -98,12 +99,15 @@ function restCard(rest) {
     </div>
       <div class="col-md-8">
          <div class="card-body">
-         <h5 class="card-title">${rest.name}  <span class="badge badge-pill badge-success">${rest.user_rating.aggregate_rating}</span></h5>
+         <h5 class="card-title">${rest.name}  <span class="badge badge-pill badge-success">
+         ${rest.user_rating.aggregate_rating}</span></h5>
          <p class="card-text">Address:<br> ${rest.address}</p>
          <p class="card-text">Phone:<br> ${rest.phone_numbers}</p>
          <p class="card-text">Cuisines:<br> ${rest.cuisines}</p>
-         <button class="btn btn-primary btn-sm active" role="button" aria-pressed="true" id=${rest.id} data-id=${rest.id} data-review=${JSON.stringify(rest.reviews)}>Read Reviews</button>
-         <a href="#" class="btn btn-primary btn-sm active" role="button" aria-pressed="true">Write Reviews</a>
+         <button class="btn btn-primary btn-sm active" role="button" aria-pressed="true"
+          id=${rest.id} data-id=${rest.id} data-review=${JSON.stringify(rest.reviews)}>Read Reviews</button>
+         <button class="btn btn-primary btn-sm active" role="button" aria-pressed="true"
+         id=${rest.phone_numbers} data-id=${rest.id} data-restname=${JSON.stringify(rest.name)} data-restaddress=${JSON.stringify(rest.address)}>Write Reviews</button>
          </Ref>
       </div>
    </div>
@@ -112,7 +116,7 @@ function restCard(rest) {
   document.getElementById('container').append(restElem)
 
   reviewsArr.push({ restId: rest.id, restReview: rest.reviews })
-
+  createReviewsArr.push({ restId: rest.id, restReview: rest.reviews })
 
   document.getElementById(rest.id).addEventListener('click', e => {
     const divId = JSON.parse(e.target.getAttribute('data-id'))
