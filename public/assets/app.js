@@ -36,6 +36,11 @@ document.getElementById('search_btn').addEventListener('click', () => {
   //     getRestaurant(lati, long)
   //   })
 })
+document.getElementById('search_btn2').addEventListener('click', () => {
+  let keyword = document.getElementById('search').value
+  keyword = keyword.replace(/\s+/g, '+')
+  getRestaurant(keyword)
+})
 
 function getRestaurant(keyword) {
   let link = `${L_B_ZOMATO}&q=${keyword}&${K_ZOMATO}`
@@ -96,7 +101,7 @@ function restCard(rest) {
          <p class="card-text">Address:<br> ${rest.address}</p>
          <p class="card-text">Phone:<br> ${rest.phone_numbers}</p>
          <p class="card-text">Cuisines:<br> ${rest.cuisines}</p>
-         <a href="#" class="btn btn-primary btn-sm active" role="button" aria-pressed="true">Read Reviews</a>
+         <a href="./reviews.html" class="btn btn-primary btn-sm active" role="button" aria-pressed="true">Read Reviews</a>
          <a href="#" class="btn btn-primary btn-sm active" role="button" aria-pressed="true">Write Reviews</a>
          </div>
       </div>

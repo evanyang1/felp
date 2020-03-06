@@ -4,9 +4,22 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Restaurant</title>
+  <title>Reviews</title>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
     integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <script> 
+      // pulling the user reviews and display it on the card
+        function getData() {
+  var xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+     document.getElementById("demo").innerHTML = this.responseText;
+    }
+  };
+  xhttp.open("GET", "ajax_info.txt", true);
+  xhttp.send();
+}
+    </script>
 </head>
 
 <body>
@@ -22,11 +35,10 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav mr-auto">
         <li class="nav-item active">
-          <a class="nav-link" href="./restaurants.html">Restaurants <span class="sr-only">(current) </span></a>
+          <a class="nav-link" href="./restaurants.html">Restaurants</a>
         </li>
         <li class="nav-item dropdown">
-          <a class="nav-link " href="./reviews.html" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true"
-            aria-expanded="false">
+          <a class="nav-link " href="./reviews.html"><span class="sr-only">(current) </span>
              Reviews
           </a>
 
@@ -41,21 +53,6 @@
     </div>
   </nav>
   <div class="container" id="container">
-
-    </div>
-    <div class="card text-center">
-      <div class="card-header">
-        <ul class="nav nav-pills card-header-pills">
-         
-        </ul>
-      </div>
-      <div class="card-body">
-        <h5 class="card-title">Restaurants</h5>
-        <p class="card-text">Search for your favorites!</p>
-        <input id="search_btn2" class="form-control mr-sm-2" type="search" placeholder="Restaurant Name" aria-label="Search">
-        <button type="button" class="btn btn-outline-dark" id="search_btn2">Search</button>
-     
-      </div>
     </div>
 
 

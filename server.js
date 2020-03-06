@@ -13,8 +13,6 @@ app.use(express.json())
 //   .then(() => app.listen(process.env.PORT || 3000))
 //   .catch(e => console.error(e))
 
-<<<<<<< HEAD
-=======
 const { User, Post } = require('./models')
 
 app.get('/users', (req, res) => User.findAll({ include: [Post] })
@@ -42,7 +40,6 @@ app.post('/posts', (req, res) => Post.create(req.body)
   .then(() => res.sendStatus(200))
   .catch(e => console.error(e)))
 
->>>>>>> ea4bc7425065c243047335c686ee809fb3646387
 require('./config').sync()
   .then(() => app.listen(process.env.PORT||3000))
   .catch(e => console.error(e))
