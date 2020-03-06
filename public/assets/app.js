@@ -1,3 +1,5 @@
+const reviewsArr = []
+
 const L_B_ZOMATO = 'https://developers.zomato.com/api/v2.1/search?'
 const L_R_ZOMATO = 'https://developers.zomato.com/api/v2.1/reviews?'
 const K_ZOMATO = 'apikey=39e17219549ea152e0fb9205ede5e31f'
@@ -36,7 +38,9 @@ document.getElementById('search_btn').addEventListener('click', () => {
   //     getRestaurant(lati, long)
   //   })
 })
+function getResthome() {
 
+}
 function getRestaurant(keyword) {
   let link = `${L_B_ZOMATO}&q=${keyword}&${K_ZOMATO}`
   // lat = ${ lati }& lon=${ long }
