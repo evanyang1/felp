@@ -1,3 +1,5 @@
+const reviewsArr = []
+
 const L_B_ZOMATO = 'https://developers.zomato.com/api/v2.1/search?'
 const L_R_ZOMATO = 'https://developers.zomato.com/api/v2.1/reviews?'
 const K_ZOMATO = 'apikey=39e17219549ea152e0fb9205ede5e31f'
@@ -36,12 +38,9 @@ document.getElementById('search_btn').addEventListener('click', () => {
   //     getRestaurant(lati, long)
   //   })
 })
-document.getElementById('search_btn2').addEventListener('click', () => {
-  let keyword = document.getElementById('search').value
-  keyword = keyword.replace(/\s+/g, '+')
-  getRestaurant(keyword)
-})
+function getResthome() {
 
+}
 function getRestaurant(keyword) {
   let link = `${L_B_ZOMATO}&q=${keyword}&${K_ZOMATO}`
   // lat = ${ lati }& lon=${ long }
@@ -110,6 +109,7 @@ function restCard(rest) {
 `
   document.getElementById('container').append(restElem)
 }
+
   // buttons direct the users to different pages
   var button = document.getElementById("createAccount");
   button.addEventListener("click", function(){
@@ -126,7 +126,7 @@ function restCard(rest) {
   document.location.href = './index.html';
   });
 
-// // API for semantic analysis 
+
 // const getPosts = () => {
 //   return fetch(`https://api.meaningcloud.com/sentiment-2.1?key=233c4b15af98df58daa1da749c297e2a&of=json&txt=Main%20dishes%20were%20quite%20good%2C%20but%20desserts%20were%20too%20sweet%20for%20me.&model=general&lang=en`)
 //     .then(res => res.json())
