@@ -39,6 +39,7 @@ document.getElementById('search_btn').addEventListener('click', () => {
   //     getRestaurant(lati, long)
   //   })
 })
+function getResthome() {
 
 // get restaurant data from api
 function getRestaurant(keyword) {
@@ -58,6 +59,7 @@ function getRestaurant(keyword) {
             listOfRest.push(rest)
             // console.log(rest)
             restCard(rest)
+
           }).catch(e => console.error(e))
       })
     })
@@ -66,22 +68,21 @@ function getRestaurant(keyword) {
 
 
 function restCard(rest) {
-  console.log(rest)
+
   let restElem = document.createElement('div')
   restElem.className = 'card mb-3'
+  restElem.id = rest.id
   restElem.innerHTML = `
-  <div class="card mb-3" >
    <div class="row no-gutters">
     <div class="col-md-4">
-
      <div id="r${rest.id}" class="carousel slide" data-ride="carousel">
        <div class="carousel-inner">
   
-         ${rest.photos.map(({ photo }, i) => (
+         ${rest.photos ? rest.photos.map(({ photo }, i) => (
     `<div class="carousel-item ${!i ? 'active' : ''} " >
-                <img src="${photo.url}" class="d-block w-100" height="300">
-              </div> `
-  )).join('')}
+     <img src="${photo.url}" class="d-block w-100" height="300">
+     </div> `
+  )).join('') : '<img src="photos/no-photo-available.png" class="d-block w-100" height="300">'}
    
        </div>
      <a class="carousel-control-prev" href="#r${rest.id}" role="button" data-slide="prev">
@@ -93,7 +94,6 @@ function restCard(rest) {
        <span class="sr-only">Next</span>
      </a>
      </div>
-
     </div>
       <div class="col-md-8">
          <div class="card-body">
@@ -112,10 +112,9 @@ function restCard(rest) {
          </Ref>
          <a href="#" class="btn btn-primary btn-sm active" role="button" aria-pressed="true">Read Reviews</a>
          <a href="#" class="btn btn-primary btn-sm active" role="button" aria-pressed="true">Write Reviews</a>
-         </div>
+         </Ref>
       </div>
    </div>
- </div>
 `
 
 // show restaurant cards on restaurant html
@@ -175,6 +174,48 @@ function restCard(rest) {
 
 // getPosts()
   document.getElementById('container').append(restElem)
+
+  reviewsArr.push({ restId: rest.id, restReview: rest.reviews })
+
+
+  document.getElementById(rest.id).addEventListener('click', e => {
+    const divId = JSON.parse(e.target.getAttribute('data-id'))
+
+    reviewsArr.forEach(elm => {
+      // console.log(elm)
+      if (elm.restId == divId) {
+        if (elm.restReview.user_reviews.length != 0) {
+
+          document.getElementById(divId).innerHTML = `
+              <ul>${elm.restReview.user_reviews.map(el => (`<li>${el.review.review_text}</li>`)).join('')}</ul>`
+        }// if
+
+      }
+    })
+  })
+
+}
+
+
+// document.getElementById('readReviews').addEventListener('click',()=>{
+// document.getElementById('container').innerHTML=''
+// let reviewElm = document.createElement('div')
+
+// })
+
+
+
+
+
+
+
+
+
+// API for semantic analysis 
+const getPosts = () => {
+  return fetch(`https://api.meaningcloud.com/sentiment-2.1?key=233c4b15af98df58daa1da749c297e2a&of=json&txt=Main%20dishes%20were%20quite%20good%2C%20but%20desserts%20were%20too%20sweet%20for%20me.&model=general&lang=en`)
+    .then(res => res.json())
+    .then(posts => console.log(posts))
 }
 
 
