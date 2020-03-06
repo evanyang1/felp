@@ -1,7 +1,6 @@
-// const router = require('express').Router()
+const router = require('express').Router()
 
-// router.use('/api', require('./userRoutes.js'))
-// router.use('/api', require('./restaurantRoutes.js'))
-// router.use('/api', require('./postRoutes.js'))
+router.use('/api', require('./userRoutes.js'))
+router.use('/api', require('./postsRoutes.js'))
 
-// module.exports = router
+module.exports = router
