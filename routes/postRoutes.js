@@ -8,5 +8,6 @@ router.get('/posts', (req, res) => Post.findAll({ include: [User] })
 router.post('/posts', (req, res) => Post.create(req.body)
   .then(() => res.sendStatus(200))
   .catch(e => console.error(e)))
+  
 
 module.exports = router

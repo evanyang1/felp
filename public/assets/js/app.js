@@ -1,15 +1,15 @@
+
 const reviewsArr = []
 
 const L_B_ZOMATO = 'https://developers.zomato.com/api/v2.1/search?'
 const L_R_ZOMATO = 'https://developers.zomato.com/api/v2.1/reviews?'
-const K_ZOMATO =
-  // 'apikey=39e17219549ea152e0fb9205ede5e31f'
-  'apikey=ee4a608fabb19dc711f33a112d67a23e'
+const K_ZOMATO = 'apikey=39e17219549ea152e0fb9205ede5e31f'
+// 'apikey=ee4a608fabb19dc711f33a112d67a23e'
 const S_RATING = 'sort=rating'
 
 let listOfRest = []
-// let lati = ''
-// let long = ''
+let lati = ''
+let long = ''
 
 class Restaurant {
 
@@ -24,7 +24,7 @@ class Restaurant {
     this.reviews = reviews
   }
 }
-// get keyword from search bar
+
 document.getElementById('search_btn').addEventListener('click', () => {
   let keyword = document.getElementById('search').value
   keyword = keyword.replace(/\s+/g, '+')
@@ -40,9 +40,8 @@ document.getElementById('search_btn').addEventListener('click', () => {
   //   })
 })
 
-// get restaurant data from api
 function getRestaurant(keyword) {
-  let link = `${L_B_ZOMATO}&q=${keyword}&${S_RATING}&${K_ZOMATO}`
+  let link = `${L_B_ZOMATO}&q=${keyword}&${K_ZOMATO}`
   // lat = ${ lati }& lon=${ long }
   fetch(link)
     .then(d => d.json())
@@ -58,30 +57,30 @@ function getRestaurant(keyword) {
             listOfRest.push(rest)
             // console.log(rest)
             restCard(rest)
+
           }).catch(e => console.error(e))
       })
     })
     .catch(e => console.error(e))
 }
 
-
 function restCard(rest) {
-  console.log(rest)
+
   let restElem = document.createElement('div')
   restElem.className = 'card mb-3'
+  restElem.id = rest.id
   restElem.innerHTML = `
-  <div class="card mb-3" >
    <div class="row no-gutters">
     <div class="col-md-4">
-
+    
      <div id="r${rest.id}" class="carousel slide" data-ride="carousel">
        <div class="carousel-inner">
   
-         ${rest.photos.map(({ photo }, i) => (
+         ${rest.photos ? rest.photos.map(({ photo }, i) => (
     `<div class="carousel-item ${!i ? 'active' : ''} " >
-                <img src="${photo.url}" class="d-block w-100" height="300">
-              </div> `
-  )).join('')}
+     <img src="${photo.url}" class="d-block w-100" height="300">
+     </div> `
+  )).join('') : '<img src="photos/no-photo-available.png" class="d-block w-100" height="300">'}
    
        </div>
      <a class="carousel-control-prev" href="#r${rest.id}" role="button" data-slide="prev">
@@ -93,39 +92,45 @@ function restCard(rest) {
        <span class="sr-only">Next</span>
      </a>
      </div>
-
     </div>
       <div class="col-md-8">
          <div class="card-body">
-         <h5 class="card-title">${rest.name}  <span class="badge badge-pill badge-success">
-         ${rest.user_rating.aggregate_rating}</span></h5>
+         <h5 class="card-title">${rest.name}  <span class="badge badge-pill badge-success">${rest.user_rating.aggregate_rating}</span></h5>
          <p class="card-text">Address:<br> ${rest.address}</p>
          <p class="card-text">Phone:<br> ${rest.phone_numbers}</p>
-         <p class="card-text">Cuisines:<br> ${rest.cuisines}</p
+         <p class="card-text">Cuisines:<br> ${rest.cuisines}</p>
+         <button class="btn btn-primary btn-sm active" role="button" aria-pressed="true" id=${rest.id} data-toggle="modal" data-target=${rest.id} data-id=${rest.id} data-review=${JSON.stringify(rest.reviews)}>Read Reviews</button>
+         <button  class="btn btn-primary btn-sm active" role="button" aria-pressed="true">Write Reviews</button>
          
-         <button class="btn btn-primary btn-sm active" role="button" aria-pressed="true"
-          id=${rest.id} data-id=${rest.id} data-review=${JSON.stringify(rest.reviews)}>Read Reviews</button>
-
-         <button class="btn btn-primary btn-sm active" role="button" aria-pressed="true"
-         id=${rest.phone_numbers} data-id=${rest.id} data-restname=${JSON.stringify(rest.name)} 
-         data-restaddress=${JSON.stringify(rest.address)}>Write Reviews</button>
-         </Ref>
-         <a href="#" class="btn btn-primary btn-sm active" role="button" aria-pressed="true">Read Reviews</a>
-         <a href="#" class="btn btn-primary btn-sm active" role="button" aria-pressed="true">Write Reviews</a>
-         </div>
       </div>
    </div>
- </div>
+     <div class="modal fade" id=${rest.id} tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id=${rest.id}>Modal title</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          ${rest.reviews}
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
 `
 
-// show restaurant cards on restaurant html
   document.getElementById('container').append(restElem)
 
-// get data for button Read Reviews and Write Reviews
   reviewsArr.push({ restId: rest.id, restReview: rest.reviews })
-  createReviewsArr.push({ restId: rest.id, restName: rest.name, restAddress: rest.address })
 
-// Read Reviews button
+
   document.getElementById(rest.id).addEventListener('click', e => {
     const divId = JSON.parse(e.target.getAttribute('data-id'))
 
@@ -142,46 +147,20 @@ function restCard(rest) {
     })
   })
 
-// Write Reviews button
-
-
-
-
-
-
-}// the end of restCard
-
-// document.getElementById('readReviews').addEventListener('click',()=>{
-// document.getElementById('container').innerHTML=''
-// let reviewElm = document.createElement('div')
-
-// })
-
-
-
-
-
-
-
-
-
-// API for semantic analysis 
-// const getPosts = () => {
-  // return fetch(`https://api.meaningcloud.com/sentiment-2.1?key=233c4b15af98df58daa1da749c297e2a&of=json&txt=Main%20dishes%20were%20quite%20good%2C%20but%20desserts%20were%20too%20sweet%20for%20me.&model=general&lang=en`)
-//     .then(res => res.json())
-//     .then(posts => console.log(posts))
-// }
-
-
-// getPosts()
-  document.getElementById('container').append(restElem)
 }
 
 
-// const getPosts = () => {
-//   return fetch(`https://api.meaningcloud.com/sentiment-2.1?key=233c4b15af98df58daa1da749c297e2a&of=json&txt=Main%20dishes%20were%20quite%20good%2C%20but%20desserts%20were%20too%20sweet%20for%20me.&model=general&lang=en`)
-//     .then(res => res.json())
-//     .then(posts => console.log(posts))
-// }
-// getPosts()
+
+
+
+
+
+
+
+
+
+
+
+
+
 
