@@ -4,10 +4,22 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Restaurant</title>
+  <title>Reviews</title>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
     integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-  <link rel="stylesheet" href="./styles/restaurant.css">
+    <script> 
+      // pulling the user reviews and display it on the card
+        function getData() {
+  var xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+     document.getElementById("demo").innerHTML = this.responseText;
+    }
+  };
+  xhttp.open("GET", "ajax_info.txt", true);
+  xhttp.send();
+}
+    </script>
 </head>
 
 <body>
@@ -22,13 +34,12 @@
 
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav mr-auto">
-        <li class="nav-item active nav-home">
-          <a class="nav-link" href="#">Home <span class="sr-only">(current) </span></a>
+        <li class="nav-item active">
+          <a class="nav-link" href="./restaurants.html">Restaurants</a>
         </li>
         <li class="nav-item dropdown">
-          <a class="nav-link " href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true"
-            aria-expanded="false">
-            Restaurants
+          <a class="nav-link " href="./reviews.html"><span class="sr-only">(current) </span>
+             Reviews
           </a>
 
         </li>
@@ -37,15 +48,21 @@
         <input id="search" class="form-control mr-sm-2" type="search" placeholder="Restaurant name" aria-label="Search">
         <!-- <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button> -->
         <button type="button" class="btn btn-outline-dark" id="search_btn">Search</button>
-        <a href="./Index.html" class="btn btn-outline-dark" id="signOut" role="button">Sign Out</a>
+        <a href="./index.html" class="btn btn-outline-dark" id="signOut" role="button">Sign Out</a>
       </form>
     </div>
   </nav>
   <div class="container" id="container">
+    </div>
 
 
+<div class="card border-dark mb-3" style="max-width: 18rem;">
+  <div class="card-header">Header</div>
+  <div class="card-body text-dark">
+    <h5 class="card-title">Dark card title</h5>
+    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
   </div>
-
+</div>
 
 
 

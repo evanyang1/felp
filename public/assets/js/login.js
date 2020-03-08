@@ -77,7 +77,7 @@ document.getElementById('signIn').addEventListener('click', event => {
   event.preventDefault()
 
   localStorage.setItem('restaurant', signIn)
-  window.location.href ='/restaurants.html'
+  window.location.href ='/restaurant.html'
   // Runs the signIn function
   signIn()
 })
@@ -90,4 +90,3 @@ document.getElementById('createUser').addEventListener('click', event => {
   // Runs the createUser function
   createUser()
 })
-
