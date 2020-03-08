@@ -77,7 +77,7 @@ document.getElementById('signIn').addEventListener('click', event => {
   event.preventDefault()
 
   localStorage.setItem('restaurant', signIn)
-  window.location.href ='/restaurants.html'
+  window.location.href ='/restaurant.html'
   // Runs the signIn function
   signIn()
 })
@@ -87,6 +87,9 @@ document.getElementById('createUser').addEventListener('click', event => {
   console.log(createUser)
   // Stop the form from refreshing the page
   event.preventDefault()
+
+  localStorage.setItem('restaurant', createUser)
+  window.location.href = '/restaurant.html'
   // Runs the createUser function
   createUser()
 })

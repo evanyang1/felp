@@ -1,10 +1,9 @@
-
 const reviewsArr = []
 
 const L_B_ZOMATO = 'https://developers.zomato.com/api/v2.1/search?'
 const L_R_ZOMATO = 'https://developers.zomato.com/api/v2.1/reviews?'
 const K_ZOMATO = 'apikey=39e17219549ea152e0fb9205ede5e31f'
-// 'apikey=ee4a608fabb19dc711f33a112d67a23e'
+// const K_ZOMATO = 'apikey=ee4a608fabb19dc711f33a112d67a23e'
 const S_RATING = 'sort=rating'
 
 let listOfRest = []
@@ -25,7 +24,8 @@ class Restaurant {
   }
 }
 
-document.getElementById('search_btn').addEventListener('click', () => {
+document.getElementById('search_btn').addEventListener('click', event => {
+  event.preventDefault()
   let keyword = document.getElementById('search').value
   keyword = keyword.replace(/\s+/g, '+')
   getRestaurant(keyword)
@@ -39,9 +39,7 @@ document.getElementById('search_btn').addEventListener('click', () => {
   //     getRestaurant(lati, long)
   //   })
 })
-function getResthome() {
 
-}
 function getRestaurant(keyword) {
   let link = `${L_B_ZOMATO}&q=${keyword}&${K_ZOMATO}`
   // lat = ${ lati }& lon=${ long }
@@ -67,14 +65,21 @@ function getRestaurant(keyword) {
 }
 
 function restCard(rest) {
-
+  let reviewLength
+  if (rest.reviews.user_reviews.length < 1) {
+    reviewLength = 0
+  }
+  else {
+    reviewLength = rest.reviews.user_reviews.length
+  }
   let restElem = document.createElement('div')
   restElem.className = 'card mb-3'
   restElem.id = rest.id
   restElem.innerHTML = `
    <div class="row no-gutters">
     <div class="col-md-4">
-     <div id="r${rest.id}" class="carousel slide" data-ride="carousel">
+    
+     <div id="x${rest.id}" class="carousel slide" data-ride="carousel">
        <div class="carousel-inner">
   
          ${rest.photos ? rest.photos.map(({ photo }, i) => (
@@ -84,11 +89,11 @@ function restCard(rest) {
   )).join('') : '<img src="photos/no-photo-available.png" class="d-block w-100" height="300">'}
    
        </div>
-     <a class="carousel-control-prev" href="#r${rest.id}" role="button" data-slide="prev">
+     <a class="carousel-control-prev" href="#s${rest.id}" role="button" data-slide="prev">
        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
        <span class="sr-only">Previous</span>
      </a>
-     <a class="carousel-control-next" href="#r${rest.id}" role="button" data-slide="next">
+     <a class="carousel-control-next" href="#s${rest.id}" role="button" data-slide="next">
        <span class="carousel-control-next-icon" aria-hidden="true"></span>
        <span class="sr-only">Next</span>
      </a>
@@ -100,42 +105,150 @@ function restCard(rest) {
          <p class="card-text">Address:<br> ${rest.address}</p>
          <p class="card-text">Phone:<br> ${rest.phone_numbers}</p>
          <p class="card-text">Cuisines:<br> ${rest.cuisines}</p>
-         <button class="btn btn-primary btn-sm active" role="button" aria-pressed="true" id=${rest.id} data-id=${rest.id} data-review=${JSON.stringify(rest.reviews)}>Read Reviews</button>
-         <a href="#" class="btn btn-primary btn-sm active" role="button" aria-pressed="true">Write Reviews</a>
-         </Ref>
+         <button class="btn btn-primary btn-sm active" role="button" aria-pressed="true" id=${rest.id} data-toggle="modal" data-target="#r${rest.id}" data-id=${rest.id} data-review=${JSON.stringify(rest.reviews)}>Read Reviews (${reviewLength})</button>
+         <button  class="btn btn-primary btn-sm active" role="button" aria-pressed="true" data-toggle="modal" data-target="#w${rest.id}">Write Reviews</button>
       </div>
    </div>
+
+   <div class="modal fade" id="r${rest.id}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+   <div class="modal-dialog" role="document">
+     <div class="modal-content">
+       <div class="modal-header">
+         <h5 class="modal-title" id="exampleModalLabel">${rest.name} Reviews</h5>
+         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+           <span aria-hidden="true">&times;</span>
+         </button>
+       </div>
+       <div id = "modal_${rest.id}"class="modal-body">
+       </div>
+       <div class="modal-footer">
+         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+       </div>
+     </div>
+   </div>
+ </div>
+
+<div class="modal fade" id="w${rest.id}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+   <div class="modal-dialog" role="document">
+     <div class="modal-content">
+       <div class="modal-header">
+         <h5 class="modal-title" id="exampleModalLabel"> ${rest.name}</h5>
+         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+           <span aria-hidden="true">&times;</span>
+         </button>
+       </div>
+       <div id = "writeReview_${rest.id}"class="modal-body">
+       </div>
+       <div class="modal-footer">
+         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+       </div>
+     </div>
+   </div>
+ </div>
+
 `
 
   document.getElementById('container').append(restElem)
 
-  reviewsArr.push({ restId: rest.id, restReview: rest.reviews })
+  // read reviews modal
+  let reviewDiv = document.createElement('ol')
+  reviewDiv.setAttribute('id', `reviews_${rest.id}`)
+  if (rest.reviews.user_reviews.length < 1) {
+    // console.log('No reviews!')
+    reviewDiv.textContent = "No Reviews to Display."
+    // reviewDiv: <div id = "reviews_${rest.id}"> No Reviews to Display <//div>
+  }
+  else {
+    for (let i = 0; i < rest.reviews.user_reviews.length; i++) {
+      // console.log(rest.reviews.user_reviews[i].review.rating)
+      // console.log(rest.reviews.user_reviews[i].review.review_text)
+      // generating the html for the user reviews
+      let reviewParagraph = document.createElement('li')
+      let apiReviewText = rest.reviews.user_reviews[i].review.review_text
+
+      if (apiReviewText.length <= 1) {
+        reviewParagraph.innerHTML = `
+      
+      <div placeholder="No review text"> <span class="badge badge-pill badge-success">${rest.reviews.user_reviews[i].review.rating}</span> No review text</div>
+      <hr>
+      `
+        reviewDiv.append(reviewParagraph)
+
+      } else {
 
 
-  document.getElementById(rest.id).addEventListener('click', e => {
-    const divId = JSON.parse(e.target.getAttribute('data-id'))
+        reviewParagraph.innerHTML = `
+      
+      <div placeholder="No review text"> <span class="badge badge-pill badge-success">${rest.reviews.user_reviews[i].review.rating}</span> ${rest.reviews.user_reviews[i].review.review_text}</div>
+      <hr>
+      `
+        // reviewParagraph.textContent = rest.reviews.user_reviews[i].review.review_text
+        reviewDiv.append(reviewParagraph)
 
-    reviewsArr.forEach(elm => {
-      // console.log(elm)
-      if (elm.restId == divId) {
-        if (elm.restReview.user_reviews.length != 0) {
+        // let commentBreak = document.createElement('hr')
+        // reviewDiv.append(commentBreak)
+      }
+    }
 
-          document.getElementById(divId).innerHTML = `
-              <ul>${elm.restReview.user_reviews.map(el => (`<li>${el.review.review_text}</li>`)).join('')}</ul>`
-        }// if
+  }
+  document.getElementById(`modal_${rest.id}`).append(reviewDiv)
 
+
+  // write review modal
+  let writeReviewDiv = document.createElement('form')
+  writeReviewDiv.setAttribute('id', `write_${rest.id}`)
+  writeReviewDiv.innerHTML = `
+  <div class="form-group">
+    <label for="exampleInputEmail1">Please write us the review</label>
+    <input type="text" class="form-control" id="userReview_${rest.id}" height="250" placeholder="Share details of your own experience at this place">
+  </div>
+  
+  <div class="form-group form-check">
+  <div class="container">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="star-rating">
+        <span class="fa fa-star-o" data-rating="1"></span>
+        <span class="fa fa-star-o" data-rating="2"></span>
+        <span class="fa fa-star-o" data-rating="3"></span>
+        <span class="fa fa-star-o" data-rating="4"></span>
+        <span class="fa fa-star-o" data-rating="5"></span>
+        <input type="hidden" id="userRating_${rest.id}" name="whatever1" class="rating-value" valu="2.56">
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <button type="submit" class="btn btn-primary">Submit</button>
+  `
+  document.getElementById(`writeReview_${rest.id}`).append(writeReviewDiv)
+
+  // star rating of write review
+  var $star_rating = $('.star-rating .fa')
+
+  var SetRatingStar = function () {
+    return $star_rating.each(function () {
+      if (parseInt($star_rating.siblings('input.rating-value').val()) >= parseInt($(this).data('rating'))) {
+        return $(this).removeClass('fa-star-o').addClass('fa-star')
+      } else {
+        return $(this).removeClass('fa-star').addClass('fa-star-o')
       }
     })
+  }
+
+  $star_rating.on('click', function () {
+    $star_rating.siblings('input.rating-value').val($(this).data('rating'))
+    let userRating = parseInt($star_rating.siblings('input.rating-value').val())
+    let userRrating = document.getElementById(`userRating_${rest.id}`).value
+    console.log(userRating)
+    return SetRatingStar()
   })
+
+  SetRatingStar()
 
 }
 
 
-// document.getElementById('readReviews').addEventListener('click',()=>{
-// document.getElementById('container').innerHTML=''
-// let reviewElm = document.createElement('div')
-
-// })
 
 
 
@@ -146,11 +259,11 @@ function restCard(rest) {
 
 
 // API for semantic analysis 
-const getPosts = () => {
-  return fetch(`https://api.meaningcloud.com/sentiment-2.1?key=233c4b15af98df58daa1da749c297e2a&of=json&txt=Main%20dishes%20were%20quite%20good%2C%20but%20desserts%20were%20too%20sweet%20for%20me.&model=general&lang=en`)
-    .then(res => res.json())
-    .then(posts => console.log(posts))
-}
+// const getPosts = () => {
+//   return fetch(`https://api.meaningcloud.com/sentiment-2.1?key=233c4b15af98df58daa1da749c297e2a&of=json&txt=Main%20dishes%20were%20quite%20good%2C%20but%20desserts%20were%20too%20sweet%20for%20me.&model=general&lang=en`)
+//     .then(res => res.json())
+//     .then(posts => console.log(posts))
+// }
 
 
-getPosts()
+// getPosts()
