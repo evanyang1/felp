@@ -29,7 +29,6 @@ document.getElementById('search_btn2').addEventListener('click', event => {
   event.preventDefault()
   let keyword = document.getElementById('search_input').value
   keyword = keyword.replace(/\s+/g, '+')
-  alert(keyword)
   getRestaurant(keyword)
   // fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${keyword}&key=AIzaSyCbOrVjet_s1nbRMEgLVNsx0reP9G6Ju6g`)
   //   .then(r => r.json())
@@ -49,7 +48,7 @@ function getRestaurant(keyword) {
   fetch(link)
     .then(d => d.json())
     .then(restaurantsData => {
-      // console.log(restaurantsData)
+       console.log(restaurantsData)
       let restaurantList = restaurantsData.restaurants
       restaurantList.forEach(({ restaurant }) => {
         let reviewLink = `${L_R_ZOMATO}&res_id=${restaurant.id}&${K_ZOMATO}`
