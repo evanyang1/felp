@@ -30,25 +30,19 @@ document.getElementById('search_btn2').addEventListener('click', event => {
   let keyword = document.getElementById('search_input').value
   keyword = keyword.replace(/\s+/g, '+')
   getRestaurant(keyword)
-  // fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${keyword}&key=AIzaSyCbOrVjet_s1nbRMEgLVNsx0reP9G6Ju6g`)
-  //   .then(r => r.json())
-  //   .then(({ results }) => {
-  //     // console.log(results[0].geometry.location.lat)
-  //     // console.log(results[0].geometry.location.lng)
-  //     let lati = results[0].geometry.location.lat
-  //     let long = results[0].geometry.location.lng
-  //     getRestaurant(lati, long)
-  //   })
+ 
 })
 function getResthome() {}
 
 function getRestaurant(keyword) {
+  document.getElementById('container').innerHTML = ""
+  listOfRest = []
   let link = `${L_B_ZOMATO}&q=${keyword}&${K_ZOMATO}`
   // lat = ${ lati }& lon=${ long }
   fetch(link)
     .then(d => d.json())
     .then(restaurantsData => {
-       console.log(restaurantsData)
+      console.log(restaurantsData)
       let restaurantList = restaurantsData.restaurants
       restaurantList.forEach(({ restaurant }) => {
         let reviewLink = `${L_R_ZOMATO}&res_id=${restaurant.id}&${K_ZOMATO}`
@@ -57,7 +51,6 @@ function getRestaurant(keyword) {
           .then(reviews => {
             let rest = new Restaurant(restaurant, reviews)
             listOfRest.push(rest)
-            // console.log(rest)
             restCard(rest)
 
           }).catch(e => console.error(e))
@@ -74,6 +67,7 @@ function restCard(rest) {
   else{
     reviewLength = rest.reviews.user_reviews.length
   }
+  
   let restElem = document.createElement('div')
   restElem.className = 'card mb-3'
   restElem.id = rest.id
@@ -130,19 +124,19 @@ function restCard(rest) {
   </div>
 </div>
 `
-
+  
   document.getElementById('container').append(restElem)
   let reviewDiv = document.createElement('ol')
   reviewDiv.setAttribute('id',`reviews_${rest.id}`)
   if (rest.reviews.user_reviews.length < 1) {
-    console.log('No reviews!')
+    //console.log('No reviews!')
     reviewDiv.textContent = "No Reviews to Display."
     // reviewDiv: <div id = "reviews_${rest.id}"> No Reviews to Display <//div>
   }
   else {
     for(let i =0;i < rest.reviews.user_reviews.length;i++) {
-    console.log(rest.reviews.user_reviews[i].review.rating)
-    console.log(rest.reviews.user_reviews[i].review.review_text)
+    //console.log(rest.reviews.user_reviews[i].review.rating)
+    //console.log(rest.reviews.user_reviews[i].review.review_text)
     // generating the html for the user reviews
     let reviewParagraph =document.createElement('li')
     reviewParagraph.textContent= rest.reviews.user_reviews[i].review.review_text
