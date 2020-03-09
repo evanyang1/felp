@@ -25,10 +25,11 @@ class Restaurant {
   }
 }
 
-document.getElementById('search_btn').addEventListener('click', event => {
+document.getElementById('search_btn2').addEventListener('click', event => {
   event.preventDefault()
-  let keyword = document.getElementById('search').value
+  let keyword = document.getElementById('search_input').value
   keyword = keyword.replace(/\s+/g, '+')
+  alert(keyword)
   getRestaurant(keyword)
   // fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${keyword}&key=AIzaSyCbOrVjet_s1nbRMEgLVNsx0reP9G6Ju6g`)
   //   .then(r => r.json())
@@ -40,7 +41,7 @@ document.getElementById('search_btn').addEventListener('click', event => {
   //     getRestaurant(lati, long)
   //   })
 })
-function getResthome() {
+function getResthome() {}
 
 function getRestaurant(keyword) {
   let link = `${L_B_ZOMATO}&q=${keyword}&${K_ZOMATO}`
@@ -78,57 +79,57 @@ function restCard(rest) {
   restElem.className = 'card mb-3'
   restElem.id = rest.id
   restElem.innerHTML = `
-   <div class="row no-gutters">
+  <div class="row no-gutters">
     <div class="col-md-4">
     
-     <div id="x${rest.id}" class="carousel slide" data-ride="carousel">
-       <div class="carousel-inner">
+    <div id="x${rest.id}" class="carousel slide" data-ride="carousel">
+      <div class="carousel-inner">
   
-         ${rest.photos ? rest.photos.map(({ photo }, i) => (
+        ${rest.photos ? rest.photos.map(({ photo }, i) => (
     `<div class="carousel-item ${!i ? 'active' : ''} " >
-     <img src="${photo.url}" class="d-block w-100" height="300">
-     </div> `
+    <img src="${photo.url}" class="d-block w-100" height="300">
+    </div> `
   )).join('') : '<img src="photos/no-photo-available.png" class="d-block w-100" height="300">'}
-   
-       </div>
-     <a class="carousel-control-prev" href="#r${rest.id}" role="button" data-slide="prev">
-       <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-       <span class="sr-only">Previous</span>
-     </a>
-     <a class="carousel-control-next" href="#r${rest.id}" role="button" data-slide="next">
-       <span class="carousel-control-next-icon" aria-hidden="true"></span>
-       <span class="sr-only">Next</span>
-     </a>
-     </div>
+  
+      </div>
+    <a class="carousel-control-prev" href="#r${rest.id}" role="button" data-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="sr-only">Previous</span>
+    </a>
+    <a class="carousel-control-next" href="#r${rest.id}" role="button" data-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="sr-only">Next</span>
+    </a>
+    </div>
     </div>
       <div class="col-md-8">
-         <div class="card-body">
-         <h5 class="card-title">${rest.name}  <span class="badge badge-pill badge-success">${rest.user_rating.aggregate_rating}</span></h5>
-         <p class="card-text">Address:<br> ${rest.address}</p>
-         <p class="card-text">Phone:<br> ${rest.phone_numbers}</p>
-         <p class="card-text">Cuisines:<br> ${rest.cuisines}</p>
-         <button class="btn btn-primary btn-sm active" role="button" aria-pressed="true" id=${rest.id} data-toggle="modal" data-target="#r${rest.id}" data-id=${rest.id} data-review=${JSON.stringify(rest.reviews)}>Read Reviews (${reviewLength})</button>
-         <button  class="btn btn-primary btn-sm active" role="button" aria-pressed="true">Write Reviews</button>
-         
+        <div class="card-body">
+        <h5 class="card-title">${rest.name}  <span class="badge badge-pill badge-success">${rest.user_rating.aggregate_rating}</span></h5>
+        <p class="card-text">Address:<br> ${rest.address}</p>
+        <p class="card-text">Phone:<br> ${rest.phone_numbers}</p>
+        <p class="card-text">Cuisines:<br> ${rest.cuisines}</p>
+        <button class="btn btn-primary btn-sm active" role="button" aria-pressed="true" id=${rest.id} data-toggle="modal" data-target="#r${rest.id}" data-id=${rest.id} data-review=${JSON.stringify(rest.reviews)}>Read Reviews (${reviewLength})</button>
+        <button  class="btn btn-primary btn-sm active" role="button" aria-pressed="true">Write Reviews</button>
+        
       </div>
-   </div>
-   <div class="modal fade" id="r${rest.id}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-   <div class="modal-dialog" role="document">
-     <div class="modal-content">
-       <div class="modal-header">
-         <h5 class="modal-title" id="exampleModalLabel">${rest.name} Reviews</h5>
-         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-           <span aria-hidden="true">&times;</span>
-         </button>
-       </div>
-       <div id = "modal_${rest.id}"class="modal-body">
-       </div>
-       <div class="modal-footer">
-         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-       </div>
-     </div>
-   </div>
- </div>
+  </div>
+  <div class="modal fade" id="r${rest.id}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">${rest.name} Reviews</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div id = "modal_${rest.id}"class="modal-body">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
 `
 
   document.getElementById('container').append(restElem)
@@ -141,15 +142,15 @@ function restCard(rest) {
   }
   else {
     for(let i =0;i < rest.reviews.user_reviews.length;i++) {
-     console.log(rest.reviews.user_reviews[i].review.rating)
-     console.log(rest.reviews.user_reviews[i].review.review_text)
-     // generating the html for the user reviews
-     let reviewParagraph =document.createElement('li')
-     reviewParagraph.textContent= rest.reviews.user_reviews[i].review.review_text
-     reviewDiv.append(reviewParagraph)
+    console.log(rest.reviews.user_reviews[i].review.rating)
+    console.log(rest.reviews.user_reviews[i].review.review_text)
+    // generating the html for the user reviews
+    let reviewParagraph =document.createElement('li')
+    reviewParagraph.textContent= rest.reviews.user_reviews[i].review.review_text
+    reviewDiv.append(reviewParagraph)
 
-     let commentBreak = document.createElement('hr')
-     reviewDiv.append(commentBreak)
+    let commentBreak = document.createElement('hr')
+    reviewDiv.append(commentBreak)
     }
     
   }
