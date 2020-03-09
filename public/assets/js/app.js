@@ -1,5 +1,9 @@
 const { axios, localStorage } = window
 
+let uid = localStorage.getItem('uid')
+let uname = localStorage.getItem('uname')
+console.log(localStorage.getItem('uname'))
+
 const reviewsArr = []
 
 const L_B_ZOMATO = 'https://developers.zomato.com/api/v2.1/search?'
@@ -25,6 +29,10 @@ class Restaurant {
     this.reviews = reviews
   }
 }
+
+
+
+
 
 document.getElementById('search_btn').addEventListener('click', event => {
   event.preventDefault()
@@ -221,9 +229,11 @@ function restCard(rest) {
   </div>
   </div>
 
-  <button type="submit" class="btn btn-primary">Submit</button>
+  <button type="submit" onclick="createPost()" class="btn btn-primary">Submit</button>
   `
-  document.getElementById(`writeReview_${rest.id}`).append(writeReviewDiv)
+
+
+  var userText = document.getElementById(`writeReview_${rest.id}`).append(writeReviewDiv)
 
   // star rating of write review
   var $star_rating = $('.star-rating .fa')
@@ -251,10 +261,56 @@ function restCard(rest) {
 }
 
 
-// clas
 
+// show the current username
+document.getElementById('message').textContent = `Hello ${uname} Welcome Felp Application!`
 
+document.getElementById('signOut').addEventListener('click', event => {
+  // Stop the form from refreshing the page
+  event.preventDefault()
 
+  // clear localStorage
+  localStorage.clear()
+
+  // little display message to signify to the user that they have not signed in
+  document.getElementById('message').textContent = 'This is a felp app for write the review you need to complete create an account or Sign in to get started. Pleace click Home button to sing in!'
+  // disable all sign in and create user form items and enable the sign out button
+  document.getElementById('signOut').setAttribute('disabled', true)
+
+  // clear out the list display
+  // document.getElementById('search_btn').innerHTML = '<li class="list-group-item">You can not posts, current Not signed in yet.</li>'
+})
+
+// click home go back to singin
+document.getElementById('index').addEventListener('click', event => {
+  // Stop the form from refreshing the page
+  event.preventDefault()
+
+  window.location.href = '/'
+  // Runs the signIn function
+
+})
+
+// function to create a new item for our to-do list
+const createPost = () => {
+  // axios POST request to create a new item, grabbing the value of the item <input> and the checked boolean for the checkbox to create the new item (including the global uid variable, which at the time of execution will have been assigned value by either the createUser or signIn function)
+  axios.post('/api/posts', {
+    rest_name: document.getElementById(exampleModalLabel).value,
+    rest_id: document.getElementById(writeReview_).value,
+    text: document.getElementById(userRating_).value,
+    rating: setRatingStar.value,
+    userId: uid
+  })
+    // once finished, a GET request for the user and all their items is run
+    .then(() => axios.get(`/api/posts/${uname}`))
+  console.log("hello")
+    // the items found are passed to renderList to re-render all the items with the new changes
+    .then(({ data: post }) => renderList(post))
+  console.log(post)
+    // handle our errors
+    .catch(e => console.error(e))
+
+}
 
 
 
