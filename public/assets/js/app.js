@@ -1,3 +1,5 @@
+const { axios, localStorage } = window
+
 const reviewsArr = []
 
 const L_B_ZOMATO = 'https://developers.zomato.com/api/v2.1/search?'
@@ -247,6 +249,9 @@ function restCard(rest) {
   SetRatingStar()
 
 }
+
+
+// clas
 
 
 

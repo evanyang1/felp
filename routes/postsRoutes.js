@@ -1,6 +1,8 @@
 const router = require('express').Router()
 const db = require('../config/index.js')
 
+const { User, Post } = require('../models')
+
 // GET all posts
 router.get('/posts', (req, res) => Post.findAll({ include: [User] })
   .then(users => res.json(users))

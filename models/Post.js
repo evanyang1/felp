@@ -1,12 +1,12 @@
-const { Model, STRING } = require('sequelize')
+const { Model, STRING , INTEGER} = require('sequelize')
 
 class Post extends Model { }
 
 Post.init({
   rest_name: STRING,
-  address: STRING,
+  rest_id: INTEGER,
   text: STRING,
-  raiting: STRING
+  rating: INTEGER
 }, { sequelize: require('../config'), modelName: 'post' })
 
 module.exports = Post
