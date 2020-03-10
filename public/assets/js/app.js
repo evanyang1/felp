@@ -2,7 +2,7 @@ const { axios, localStorage } = window
 
 let uid = localStorage.getItem('uid')
 let uname = localStorage.getItem('uname')
-console.log(localStorage.getItem('uname'))
+let uemail = localStorage.getItem('uemail')
 
 const reviewsArr = []
 
@@ -10,6 +10,7 @@ const L_B_ZOMATO = 'https://developers.zomato.com/api/v2.1/search?'
 const L_R_ZOMATO = 'https://developers.zomato.com/api/v2.1/reviews?'
 const K_ZOMATO = 'apikey=39e17219549ea152e0fb9205ede5e31f'
 // const K_ZOMATO = 'apikey=ee4a608fabb19dc711f33a112d67a23e'
+// const K_ZOMATO = 'apikey=d7aecbf81dbbebd81715f46c52946fc3'
 const S_RATING = 'sort=rating'
 
 let listOfRest = []
@@ -209,7 +210,7 @@ function restCard(rest) {
   writeReviewDiv.setAttribute('id', `write_${rest.id}`)
   writeReviewDiv.innerHTML = `
   <div class="form-group">
-    <label for="exampleInputEmail1">Please write us the review</label>
+    <label for="exampleInputEmail1">Please leave us a review</label>
     <input type="text" class="form-control" id="userReview_${rest.id}" height="250" placeholder="Share details of your own experience at this place">
   </div>
   
@@ -263,7 +264,7 @@ function restCard(rest) {
 
 
 // show the current username
-document.getElementById('message').textContent = `Hello ${uname} Welcome Felp Application!`
+document.getElementById('message').textContent = `Hello ${uname} ! Welcome to Felp!`
 
 document.getElementById('signOut').addEventListener('click', event => {
   // Stop the form from refreshing the page
@@ -273,7 +274,7 @@ document.getElementById('signOut').addEventListener('click', event => {
   localStorage.clear()
 
   // little display message to signify to the user that they have not signed in
-  document.getElementById('message').textContent = 'This is a felp app for write the review you need to complete create an account or Sign in to get started. Pleace click Home button to sing in!'
+  document.getElementById('message').textContent = 'This is an app for writing the reviews you need to complete. Create an account or Sign in to get started! Please click the Home button to sign in!'
   // disable all sign in and create user form items and enable the sign out button
   document.getElementById('signOut').setAttribute('disabled', true)
 
@@ -291,26 +292,57 @@ document.getElementById('index').addEventListener('click', event => {
 
 })
 
-// function to create a new item for our to-do list
-const createPost = () => {
-  // axios POST request to create a new item, grabbing the value of the item <input> and the checked boolean for the checkbox to create the new item (including the global uid variable, which at the time of execution will have been assigned value by either the createUser or signIn function)
-  axios.post('/api/posts', {
-    rest_name: document.getElementById(exampleModalLabel).value,
-    rest_id: document.getElementById(writeReview_).value,
-    text: document.getElementById(userRating_).value,
-    rating: setRatingStar.value,
-    userId: uid
-  })
-    // once finished, a GET request for the user and all their items is run
-    .then(() => axios.get(`/api/posts/${uname}`))
-  console.log("hello")
-    // the items found are passed to renderList to re-render all the items with the new changes
-    .then(({ data: post }) => renderList(post))
-  console.log(post)
-    // handle our errors
-    .catch(e => console.error(e))
+// // function to create a new item for our to-do list
+// const createPost = () => {
+//   // axios POST request to create a new item, grabbing the value of the item <input> and the checked boolean for the checkbox to create the new item (including the global uid variable, which at the time of execution will have been assigned value by either the createUser or signIn function)
+//   axios.post('/api/posts', {
+//     rest_name: document.getElementById(exampleModalLabel).value,
+//     rest_id: document.getElementById(writeReview_).value,
+//     text: document.getElementById(userRating_).value,
+//     rating: setRatingStar.value,
+//     userId: uid
+//   })
+//     // once finished, a GET request for the user and all their items is run
+//     .then(() => axios.get(`/api/posts/${uname}`))
+//   console.log("hello")
+//     // the items found are passed to renderList to re-render all the items with the new changes
+//     .then(({ data: post }) => renderList(post))
+//   console.log(post)
+//     // handle our errors
+//     .catch(e => console.error(e))
 
+// }
+
+document.getElementById('userReviews').addEventListener('click', event => {
+  window.location.href = '/userreviews.html'
+})
+
+
+
+// read reviews from data base
+// axios.get all same rest_id posts, get reviews, use reviews.text (ask nok)
+
+if (dataReviews.length >= 1) {
+  for (let i = 0; i < dataReviews.length; i++) {
+    console.log(dataReviews)
+
+    fetch(`https://api.meaningcloud.com/sentiment-2.1?key=233c4b15af98df58daa1da749c297e2a&of=json&txt=${dataReviews[i].text}&model=general&lang=en`)
+      .then(res => res.json())
+      .then(posts => {
+        console.log(posts.score_tag)
+        if (posts.score_tag = 'P+' || 'P' || 'NEU') {
+          let UserReviewParagraph = document.createElement('li')
+          UserReviewParagraph.innerHTML = `
+           <div class="bd-callout bd-callout-info"> 
+           <div><span class="badge badge-pill badge-success">${dataReviews[i].rating}</span> ${dataReviews[i].text}</div>
+           </div>`
+
+          reviewDiv.append(UserReviewParagraph)
+        }
+      })
+  }
 }
+
 
 
 

@@ -5,7 +5,7 @@ const { axios, localStorage } = window
 let uid = localStorage.getItem('uid')
 let uname = localStorage.getItem('uname')
 let uemail = localStorage.getItem('uemail')
-console.log(uname)
+// console.log(uname)
 
 
 // function to create a new user
