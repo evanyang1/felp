@@ -5,6 +5,7 @@ const { axios, localStorage } = window
 let uid = localStorage.getItem('uid')
 let uname = localStorage.getItem('uname')
 let uemail = localStorage.getItem('uemail')
+// console.log(uname)
 
 
 // function to create a new user
@@ -21,12 +22,10 @@ const createUser = () => {
     .then(({ data: { id, username, email } }) => {
       console.log("info off data ------- " + id + username + email)
       // assigning the retrieved value to our global variables for sharing the info between many functions, as well as passing the value into localStorage
-      uid = id
-      uname = username
-      uemail = email
       localStorage.setItem('uid', id)
       localStorage.setItem('uname', username)
       localStorage.setItem('uemail', email)
+      console.log(localStorage.getItem('uname'))
 
       // little display message to signify to the user that they have signed in
       document.getElementById('message').textContent = `Hello ${username}! Welcome!`
@@ -48,7 +47,7 @@ const signIn = (username, useremail) => {
 
 
     // destructuring the list of items found off the payload
-    .then(({ data}) => {
+    .then(({ data }) => {
       console.log(data)
       // assigning the retrieved value to our global variables for sharing the info between many functions, as well as passing the value into localStorage
       // uid = post[0].id
@@ -62,7 +61,11 @@ const signIn = (username, useremail) => {
       // renderList(list)
 
       // // little display message to signify to the user that they have signed in
-      document.getElementById('message').textContent = `Hello ${data.username}! Welcome!`
+      localStorage.setItem('uid', data.id)
+      localStorage.setItem('uname', data.username)
+      localStorage.setItem('uemail', data.email)
+      console.log(localStorage.getItem('uname'))
+      document.getElementById('message').textContent = `Hello ${data.uname}! Welcome!`
       // disable all sign in and create user form items and enable the sign out button
       document.getElementById('username').setAttribute('disabled', true)
       document.getElementById('signIn').setAttribute('disabled', true)
@@ -77,7 +80,10 @@ document.getElementById('signIn').addEventListener('click', event => {
   event.preventDefault()
 
   localStorage.setItem('restaurant', signIn)
-  window.location.href ='/restaurants.html'
+  setTimeout(function () {
+    window.location.href = '/restaurant.html';
+  }, 1000);
+  // window.location.href = '/restaurant.html'
   // Runs the signIn function
   signIn()
 })
@@ -87,6 +93,11 @@ document.getElementById('createUser').addEventListener('click', event => {
   console.log(createUser)
   // Stop the form from refreshing the page
   event.preventDefault()
+
+  localStorage.setItem('restaurant', createUser)
+  setTimeout(function () {
+    window.location.href = '/restaurant.html';
+  }, 1000);
   // Runs the createUser function
   createUser()
 })
