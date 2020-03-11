@@ -322,26 +322,26 @@ document.getElementById('userReviews').addEventListener('click', event => {
 // read reviews from data base
 // axios.get all same rest_id posts, get reviews, use reviews.text (ask nok)
 
-if (dataReviews.length >= 1) {
-  for (let i = 0; i < dataReviews.length; i++) {
-    console.log(dataReviews)
+// if (dataReviews.length >= 1) {
+//   for (let i = 0; i < dataReviews.length; i++) {
+//     console.log(dataReviews)
 
-    fetch(`https://api.meaningcloud.com/sentiment-2.1?key=233c4b15af98df58daa1da749c297e2a&of=json&txt=${dataReviews[i].text}&model=general&lang=en`)
-      .then(res => res.json())
-      .then(posts => {
-        console.log(posts.score_tag)
-        if (posts.score_tag = 'P+' || 'P' || 'NEU') {
-          let UserReviewParagraph = document.createElement('li')
-          UserReviewParagraph.innerHTML = `
-           <div class="bd-callout bd-callout-info"> 
-           <div><span class="badge badge-pill badge-success">${dataReviews[i].rating}</span> ${dataReviews[i].text}</div>
-           </div>`
+//     fetch(`https://api.meaningcloud.com/sentiment-2.1?key=233c4b15af98df58daa1da749c297e2a&of=json&txt=${dataReviews[i].text}&model=general&lang=en`)
+//       .then(res => res.json())
+//       .then(posts => {
+//         console.log(posts.score_tag)
+//         if (posts.score_tag = 'P+' || 'P' || 'NEU') {
+//           let UserReviewParagraph = document.createElement('li')
+//           UserReviewParagraph.innerHTML = `
+//            <div class="bd-callout bd-callout-info"> 
+//            <div><span class="badge badge-pill badge-success">${dataReviews[i].rating}</span> ${dataReviews[i].text}</div>
+//            </div>`
 
-          reviewDiv.append(UserReviewParagraph)
-        }
-      })
-  }
-}
+//           reviewDiv.append(UserReviewParagraph)
+//         }
+//       })
+//   }
+// }
 
 
 
